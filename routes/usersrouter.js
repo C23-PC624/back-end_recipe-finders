@@ -50,32 +50,22 @@ usersrouter.delete("/users/:id", (req, res) => {
     });
 });
 
-// usersrouter.post('/users', multer.single('img'), imgUpload.uploadToGcs, (req, res) => {
-//     const { username, password, preferences } = req.body;
-//     const imageUrl = req.file ? req.file.cloudStoragePublicUrl : '';
-  
-//     const query = 'INSERT INTO users (username, password, preferences, img) VALUES (?, ?, ?, ?)';
-//     connection.query(query, [username, password, preferences, imageUrl], (err, result) => {
-//       if (err) {
-//         res.status(500).send({ message: err.sqlMessage });
-//       } else {
-//         res.status(201).send({ message: 'User inserted successfully', insertId: result.insertId });
-//       }
-//     });
-//   });
 
-// Register User
-usersrouter.post("/users/register", (req, res) => {
-  const {name, username, password} = req.body;
-  const query = 'INSERT INTO users (name, username, password) VALUES (?, ?, ?)';
-  connection.query(query, [name, username, password], (err, result) => {
+usersrouter.post('/users/register', multer.single('img'), imgUpload.uploadToGcs, (req, res) => {
+  const { name,username, password, preferences } = req.body;
+  const imageUrl = req.file ? req.file.cloudStoragePublicUrl : '';
+
+  const query = 'INSERT INTO users (name,username, password, preferences, img) VALUES (?,?, ?, ?, ?)';
+  connection.query(query, [name,username, password, preferences, imageUrl], (err, result) => {
     if (err) {
       res.status(500).send({ message: err.sqlMessage });
     } else {
-      res.status(201).send({ message: 'Registration Successful', insertId: result.insertId });
+      res.status(201).send({ message: 'User inserted successfully', insertId: result.insertId });
     }
   });
 });
+
+
 
 // Login User
 usersrouter.post("/users/login", (req, res) => {
