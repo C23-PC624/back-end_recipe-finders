@@ -3,13 +3,14 @@ const historyrouter = express.Router()
 const Multer = require('multer')
 const imgUpload = require('../modules/imgUpload')
 const connection = require('../db');
+const verifyToken = require('./authMiddleware').verifyToken
 
 const multer = Multer({
     storage: Multer.MemoryStorage,
     fileSize: 5 * 1024 * 1024
 })
 
-historyrouter.get("/history", (req, res) => {
+historyrouter.get("/history", verifyToken, (req, res) => {
     const query = "SELECT * FROM history";
     connection.query(query, (err, rows, field) => {
         if(err) {
@@ -20,7 +21,7 @@ historyrouter.get("/history", (req, res) => {
     });
 });
 
-historyrouter.get("/history/:id", (req, res) => {
+historyrouter.get("/history/:id", verifyToken, (req, res) => {
     const id = req.params.id;
 
     const query = "SELECT * FROM history WHERE id = ?";
@@ -34,7 +35,7 @@ historyrouter.get("/history/:id", (req, res) => {
 });
 
 // historyrouter for /history/:id endpoint
-historyrouter.delete("/history/:id", (req, res) => {
+historyrouter.delete("/history/:id", verifyToken, (req, res) => {
     const id = req.params.id;
     const query = "DELETE FROM history WHERE id = ?";
     connection.query(query, [id], (err, rows, field) => {
@@ -46,7 +47,7 @@ historyrouter.delete("/history/:id", (req, res) => {
     });
 });
 
-historyrouter.post('/history', multer.single('img'), imgUpload.uploadToGcs, (req, res) => {
+historyrouter.post('/history', verifyToken, multer.single('img'), imgUpload.uploadToGcs, (req, res) => {
     const { user_id } = req.body;
     const imageUrl = req.file ? req.file.cloudStoragePublicUrl : '';
   

@@ -3,6 +3,7 @@ const foodrouter = express.Router()
 const Multer = require('multer')
 const imgUpload = require('../modules/imgUpload')
 const connection = require('../db');
+const { verifyToken } = require('./authMiddleware');
 
 const multer = Multer({
     storage: Multer.MemoryStorage,
@@ -10,7 +11,7 @@ const multer = Multer({
 })
 
 // Router for /food endpoint
-foodrouter.get("/food", (req, res) => {
+foodrouter.get("/food", verifyToken, (req, res) => {
     const query = "SELECT * FROM food";
     connection.query(query, (err, rows, field) => {
         if(err) {
@@ -21,7 +22,7 @@ foodrouter.get("/food", (req, res) => {
     });
 });
 // foodrouter for /food/:id endpoint
-foodrouter.get("/food/:id", (req, res) => {
+foodrouter.get("/food/:id", verifyToken, (req, res) => {
     const id = req.params.id;
 
     const query = "SELECT * FROM food WHERE id = ?";

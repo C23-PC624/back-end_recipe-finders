@@ -4,6 +4,7 @@ const Multer = require('multer')
 const imgUpload = require('../modules/imgUpload')
 const connection = require('../db');
 const jwt = require('jsonwebtoken');
+const verifyToken = require('./authMiddleware').verifyToken;
 
 
 
@@ -23,7 +24,7 @@ usersrouter.get("/users", verifyToken, (req, res) => {
     });
 });
 // usersrouter for /users/:id endpoint
-usersrouter.get("/users/:id", (req, res) => {
+usersrouter.get("/users/:id", verifyToken, (req, res) => {
     const id = req.params.id;
 
     const query = "SELECT * FROM users WHERE id = ?";
@@ -138,20 +139,7 @@ usersrouter.post("/users/login", (req, res) => {
   });
 
 
-// Verify Token untuk autentikasi setelah melakukan login
-function verifyToken(req, res, next) {
-  const token = req.headers['authorization'];
-  if (!token) {
-    return res.status(403).send({ message: 'You are not logged in' });
-}
-jwt.verify(token, 'secret_key', (err, decoded) => { 
-  if (err) {
-      return res.status(500).send({ message: 'Failed to authenticate token' })
-  }
-  req.userId = decoded.id // Menyimpan ID pengguna yang terotentikasi dalam objek permintaan (request)
-  next()
-})
-}
+
 
   
 
