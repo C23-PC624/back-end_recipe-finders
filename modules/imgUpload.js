@@ -8,12 +8,12 @@ const pathKey = path.resolve('./serviceaccountkey.json')
 
 // TODO: Sesuaikan konfigurasi Storage
 const gcs = new Storage({
-    projectId: 'submission-mgce-gilang-marinta',
+    projectId: 'recipe-finder-388213',
     keyFilename: pathKey
 })
 
 // TODO: Tambahkan nama bucket yang digunakan
-const bucketName = 'submission-mgce-gilang-marinta'
+const bucketName = 'recipe-finder-bucket-001'
 const bucket = gcs.bucket(bucketName)
 
 function getPublicUrl(filename) {
