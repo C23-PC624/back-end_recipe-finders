@@ -5,6 +5,7 @@ const imgUpload = require('../modules/imgUpload')
 const connection = require('../db');
 const jwt = require('jsonwebtoken');
 const verifyToken = require('./authMiddleware').verifyToken;
+const bcrypt = require('bcrypt');
 
 
 
@@ -52,39 +53,57 @@ usersrouter.delete("/users/:id", (req, res) => {
 
 
 usersrouter.post('/users/register', multer.single('img'), imgUpload.uploadToGcs, (req, res) => {
-  const { name,username, password, preferences } = req.body;
+  const { name, username, password, preferences } = req.body;
   const imageUrl = req.file ? req.file.cloudStoragePublicUrl : '';
 
-  const query = 'INSERT INTO users (name,username, password, preferences, img) VALUES (?,?, ?, ?, ?)';
-  connection.query(query, [name,username, password, preferences, imageUrl], (err, result) => {
+  // Mengenkripsi password menggunakan bcrypt
+  bcrypt.hash(password, 10, (err, hashedPassword) => {
     if (err) {
-      res.status(500).send({ message: err.sqlMessage });
+      res.status(500).send({ message: 'Password encryption failed' });
     } else {
-      res.status(201).send({ message: 'User inserted successfully', insertId: result.insertId });
+      const query = 'INSERT INTO users (name, username, password, preferences, img) VALUES (?, ?, ?, ?, ?)';
+      connection.query(query, [name, username, hashedPassword, preferences, imageUrl], (err, result) => {
+        if (err) {
+          res.status(500).send({ message: err.sqlMessage });
+        } else {
+          res.status(201).send({ message: 'User inserted successfully', insertId: result.insertId });
+        }
+      });
     }
   });
 });
+
 
 
 
 // Login User
 usersrouter.post("/users/login", (req, res) => {
-  const {username, password} = req.body;
-  const query = 'SELECT * FROM users WHERE username = ? AND password = ?';
-  connection.query(query, [username, password], (err, rows) => {
+  const { username, password } = req.body;
+  const query = 'SELECT * FROM users WHERE username = ?';
+  connection.query(query, [username], (err, rows) => {
     if (err) {
       res.status(500).send({ message: err.sqlMessage });
     } else {
       if (rows.length === 0) {
         res.status(404).send({ message: 'User not found' });
-      } else if (rows.length > 0) {
+      } else {
         const user = rows[0];
-        const token = jwt.sign({id : user.id}, 'secret_key')
-        res.status(200).send({ message: 'Login Successful', data: rows[0], token: token });
+        // Membandingkan password yang diberikan dengan password yang di-hash
+        bcrypt.compare(password, user.password, (err, result) => {
+          if (err) {
+            res.status(500).send({ message: 'Password comparison failed' });
+          } else if (result) {
+            const token = jwt.sign({ id: user.id }, 'secret_key');
+            res.status(200).send({ message: 'Login Successful', data: user, token: token });
+          } else {
+            res.status(401).send({ message: 'Invalid password' });
+          }
+        });
       }
     }
   });
 });
+
 
 
 
