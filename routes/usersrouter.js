@@ -127,28 +127,54 @@ usersrouter.put('/editpref/:id', verifyToken, (req, res) => {
 
 usersrouter.put('/editpass/:id', verifyToken, (req, res) => {
   const id = req.params.id;
-  const { password } = req.body;
+  const { oldpassword, password } = req.body;
 
-  // Mengenkripsi password menggunakan bcrypt
-  bcrypt.hash(password, 10, (err, hashedPassword) => {
+  // Mengambil password saat ini dari database
+  const getPasswordQuery = 'SELECT password FROM users WHERE id = ?';
+
+  connection.query(getPasswordQuery, [id], (err, result) => {
     if (err) {
-      res.status(500).send({ message: 'Password encryption failed' });
+      res.status(500).send({ message: err.sqlMessage });
     } else {
-      const query = 'UPDATE users SET password = ? WHERE id = ?';
-      connection.query(query, [hashedPassword, id], (err, result) => {
-        if (err) {
-          res.status(500).send({ message: err.sqlMessage });
-        } else {
-          if (result.affectedRows === 0) {
-            res.status(404).send({ message: 'User not found' });
+      if (result.length === 0) {
+        res.status(404).send({ message: 'User not found' });
+      } else {
+        const currentPassword = result[0].password;
+
+        // Membandingkan old password yang diberikan dengan password saat ini
+        bcrypt.compare(oldpassword, currentPassword, (err, isMatch) => {
+          if (err) {
+            res.status(500).send({ message: 'Error comparing passwords' });
+          } else if (!isMatch) {
+            res.status(401).send({ message: 'Old password is incorrect' });
           } else {
-            res.status(200).send({ message: 'Password updated successfully' });
+            // Mengenkripsi password baru menggunakan bcrypt
+            bcrypt.hash(password, 10, (err, hashedPassword) => {
+              if (err) {
+                res.status(500).send({ message: 'Password encryption failed' });
+              } else {
+                const updatePasswordQuery = 'UPDATE users SET password = ? WHERE id = ?';
+                connection.query(updatePasswordQuery, [hashedPassword, id], (err, result) => {
+                  if (err) {
+                    res.status(500).send({ message: err.sqlMessage });
+                  } else {
+                    if (result.affectedRows === 0) {
+                      res.status(404).send({ message: 'User not found' });
+                    } else {
+                      res.status(200).send({ message: 'Password updated successfully' });
+                    }
+                  }
+                });
+              }
+            });
           }
-        }
-      });
+        });
+      }
     }
   });
 });
+
+
 
 
   usersrouter.put('/editimage/:id', multer.single('img'), imgUpload.uploadToGcs, verifyToken, (req, res) => {
