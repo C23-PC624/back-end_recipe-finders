@@ -9,7 +9,7 @@ const verifyToken = require('./authMiddleware').verifyToken
 
 
 
-favoriterouter.get("/favorites", (req, res) => {
+favoriterouter.get("/favorites", verifyToken, (req, res) => {
     const query = "SELECT * FROM favorites";
     connection.query(query, (err, rows, field) => {
         if(err) {
@@ -23,9 +23,8 @@ favoriterouter.get("/favorites", (req, res) => {
 
 
 // Router for /preferences/:id endpoint
-favoriterouter.get("/favorites/:id", (req, res) => {
+favoriterouter.get("/favorites/:id",verifyToken, (req, res) => {
     const id = req.params.id;
-
     const query = "SELECT food.*, favorites.id AS favorite_id FROM food JOIN favorites ON food.id = favorites.food_id WHERE favorites.user_id = ? ";
     connection.query(query, [id], (err, rows, field) => {
         if(err) {
@@ -52,7 +51,6 @@ favoriterouter.delete("/favorites/:id", verifyToken, (req, res) => {
 
 favoriterouter.post('/favorites', (req, res) => {
     const { user_id,food_id } = req.body;
-  
     const query = 'INSERT INTO favorites (user_id , food_id) VALUES (? ,?)';
     connection.query(query, [user_id,food_id], (err, result) => {
       if (err) {

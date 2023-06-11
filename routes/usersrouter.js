@@ -28,7 +28,7 @@ usersrouter.get("/users", verifyToken, (req, res) => {
 usersrouter.get("/users/:id", verifyToken, (req, res) => {
     const id = req.params.id;
 
-    const query = "SELECT * FROM users WHERE id = ?";
+    const query = "SELECT users.name, users.username, users.img, preferences.name AS preference_name FROM users JOIN preferences ON users.preferences = preferences.id WHERE users.id = ?";
     connection.query(query, [id], (err, rows, field) => {
         if(err) {
             res.status(500).send({message: err.sqlMessage});
@@ -105,26 +105,77 @@ usersrouter.post("/users/login", (req, res) => {
 });
 
 
+usersrouter.put('/editpref/:id', verifyToken, (req, res) => {
+  const id = req.params.id;
+  const { preferences } = req.body;
+  const query = 'UPDATE users SET preferences = ? WHERE id = ?';
+  connection.query(query, [preferences, id], (err, result) => {
+    if (err) {
+      res.status(500).send({ message: err.sqlMessage });
+    } else {
+      if (result.affectedRows === 0) {
+        res.status(404).send({ message: 'User not found' });
+      } else {
+        res.status(200).send({ message: 'Prefences add successfully' });
+      }
+    }
+  });
+});
 
 
-  usersrouter.put('/edit_Pass/:id', (req, res) => {
+
+
+usersrouter.put('/editpass/:id', verifyToken, (req, res) => {
+  const id = req.params.id;
+  const { password } = req.body;
+
+  // Mengenkripsi password menggunakan bcrypt
+  bcrypt.hash(password, 10, (err, hashedPassword) => {
+    if (err) {
+      res.status(500).send({ message: 'Password encryption failed' });
+    } else {
+      const query = 'UPDATE users SET password = ? WHERE id = ?';
+      connection.query(query, [hashedPassword, id], (err, result) => {
+        if (err) {
+          res.status(500).send({ message: err.sqlMessage });
+        } else {
+          if (result.affectedRows === 0) {
+            res.status(404).send({ message: 'User not found' });
+          } else {
+            res.status(200).send({ message: 'Password updated successfully' });
+          }
+        }
+      });
+    }
+  });
+});
+
+
+  usersrouter.put('/editimage/:id', multer.single('img'), imgUpload.uploadToGcs, verifyToken, (req, res) => {
     const id = req.params.id;
-    const { password } = req.body;
-    const query = 'UPDATE users SET password = ? WHERE id = ?';
-    connection.query(query, [password, id], (err, result) => {
+    
+    let imageUrl = '';
+  
+    if (req.file && req.file.cloudStoragePublicUrl) {
+      imageUrl = req.file.cloudStoragePublicUrl;
+    }
+    const query = 'UPDATE users SET img = ? WHERE id = ?';
+    connection.query(query, [ imageUrl, id], (err, result) => {
       if (err) {
         res.status(500).send({ message: err.sqlMessage });
       } else {
         if (result.affectedRows === 0) {
-          res.status(404).send({ message: 'User not found' });
+          res.status(404).send({ message: 'Users not found' });
         } else {
-          res.status(200).send({ message: 'User password updated successfully' });
+          res.status(200).send({ message: 'Users updated successfully' });
         }
       }
     });
   });
 
-  usersrouter.put('/users/:id', multer.single('img'), imgUpload.uploadToGcs, (req, res) => {
+
+
+  usersrouter.put('/users/:id', multer.single('img'), imgUpload.uploadToGcs, verifyToken,(req, res) => {
     const id = req.params.id;
     const { username, preferences } = req.body;
     let imageUrl = '';
