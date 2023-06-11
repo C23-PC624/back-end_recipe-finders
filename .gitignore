@@ -6,3 +6,7 @@
 
 # Node.js dependencies:
 node_modules/
+
+
+# Ignore serviceaccountkey.json
+serviceaccountkey.json

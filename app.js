@@ -7,6 +7,7 @@ const preferences = require('./routes/preferencesrouter');
 const food = require('./routes/foodrouter');
 const user = require('./routes/usersrouter');
 const history = require('./routes/historyrouter');
+const favorite = require('./routes/favorites')
 
 app.use(bodyParser.json()); // Middleware untuk mem-parsing body request dalam format JSON
 app.use(bodyParser.urlencoded({ extended: true })); // Middleware untuk mem-parsing body request dalam format application/x-www-form-urlencoded
@@ -17,6 +18,7 @@ app.use(preferences);
 app.use(food);
 app.use(user);
 app.use(history);
+app.use(favorite);
 
 app.get("/", (req, res) => {
     console.log("Response success");
