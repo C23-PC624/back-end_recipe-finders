@@ -4,11 +4,9 @@ const favoriterouter = express.Router()
 const Multer = require('multer')
 const imgUpload = require('../modules/imgUpload')
 const connection = require('../db');
+const verifyToken = require('./authMiddleware').verifyToken
 
-const multer = Multer({
-    storage: Multer.MemoryStorage,
-    fileSize: 5 * 1024 * 1024
-})
+
 
 
 favoriterouter.get("/favorites", (req, res) => {
@@ -25,10 +23,10 @@ favoriterouter.get("/favorites", (req, res) => {
 
 
 // Router for /preferences/:id endpoint
-favoriterouter.get("/preferences/:id", (req, res) => {
+favoriterouter.get("/favorites/:id", (req, res) => {
     const id = req.params.id;
 
-    const query = "SELECT * FROM preferences WHERE id = ?";
+    const query = "SELECT food.*, favorites.id AS favorite_id FROM food JOIN favorites ON food.id = favorites.food_id WHERE favorites.user_id = ? ";
     connection.query(query, [id], (err, rows, field) => {
         if(err) {
             res.status(500).send({message: err.sqlMessage});
@@ -37,6 +35,20 @@ favoriterouter.get("/preferences/:id", (req, res) => {
         }
     });
 });
+
+
+favoriterouter.delete("/favorites/:id", verifyToken, (req, res) => {
+    const id = req.params.id;
+    const query = "DELETE FROM favorites WHERE id = ?";
+    connection.query(query, [id], (err, rows, field) => {
+        if (err) {
+            res.status(500).send({message: err.sqlMessage});
+        } else {
+            res.send({message: "Delete successful"});
+        }
+    });
+});
+
 
 favoriterouter.post('/favorites', (req, res) => {
     const { user_id,food_id } = req.body;

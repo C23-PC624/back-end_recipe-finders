@@ -50,17 +50,18 @@ foodrouter.delete("/food/:id", (req, res) => {
 
 
 foodrouter.post('/food', multer.single('img'), imgUpload.uploadToGcs, (req, res) => {
-    const { name, category, description, ingredients } = req.body;
-    const imageUrl = req.file ? req.file.cloudStoragePublicUrl : '';
-    const query = 'INSERT INTO food (name, category, description, ingredients, img) VALUES (?, ?, ?, ?, ?)';
-    connection.query(query, [name, category, description, ingredients, imageUrl], (err, result) => {
-      if (err) {
-        res.status(500).send({ message: err.sqlMessage });
-      } else {
-        res.status(201).send({ message: 'Food inserted successfully', insertId: result.insertId });
-      }
-    });
+  const { name, category, description, ingredients, kkal, lemak, protein, karbohidrat } = req.body;
+  const imageUrl = req.file ? req.file.cloudStoragePublicUrl : '';
+  const query = 'INSERT INTO food (name, category, description, ingredients, kkal, lemak, protein, karbohidrat, img) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+  connection.query(query, [name, category, description, ingredients, kkal, lemak, protein, karbohidrat, imageUrl], (err, result) => {
+    if (err) {
+      res.status(500).send({ message: err.sqlMessage });
+    } else {
+      res.status(201).send({ message: 'Food inserted successfully', insertId: result.insertId });
+    }
   });
+});
+
 
   foodrouter.put('/food/:id', multer.single('img'), imgUpload.uploadToGcs, (req, res) => {
     const id = req.params.id;
