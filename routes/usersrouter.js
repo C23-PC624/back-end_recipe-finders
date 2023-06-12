@@ -28,7 +28,7 @@ usersrouter.get("/users", verifyToken, (req, res) => {
 usersrouter.get("/users/:id", verifyToken, (req, res) => {
     const id = req.params.id;
 
-    const query = "SELECT users.name, users.username, users.img, preferences.name AS preference_name FROM users JOIN preferences ON users.preferences = preferences.id WHERE users.id = ?";
+    const query = "SELECT users.id, users.name, users.username, users.password, users.img, preferences.name AS preference_name FROM users JOIN preferences ON users.preferences = preferences.id WHERE users.id = ?";
     connection.query(query, [id], (err, rows, field) => {
         if(err) {
             res.status(500).send({message: err.sqlMessage});
