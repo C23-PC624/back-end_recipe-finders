@@ -49,7 +49,7 @@ favoriterouter.delete("/favorites/:id", verifyToken, (req, res) => {
 });
 
 
-favoriterouter.post('/favorites', (req, res) => {
+favoriterouter.post('/favorites', verifyToken, (req, res) => {
     const { user_id,food_id } = req.body;
     const query = 'INSERT INTO favorites (user_id , food_id) VALUES (? ,?)';
     connection.query(query, [user_id,food_id], (err, result) => {
