@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 
 // Verify Token untuk autentikasi setelah melakukan login
 function verifyToken(req, res, next) {
-    const token = req.headers['authorization'];
+    const token = req.headers['authentication'];
     if (!token) {
       return res.status(403).send({ message: 'You are not logged in' });
   }
