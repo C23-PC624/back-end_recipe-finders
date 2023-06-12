@@ -50,10 +50,10 @@ foodrouter.delete("/food/:id", (req, res) => {
 
 
 foodrouter.post('/food', multer.single('img'), imgUpload.uploadToGcs, (req, res) => {
-  const { name, category, description, ingredients, kkal, lemak, protein, karbohidrat } = req.body;
+  const { name, category, description, ingredients, kkal, lemak, protein, karbohidrat, idx } = req.body;
   const imageUrl = req.file ? req.file.cloudStoragePublicUrl : '';
-  const query = 'INSERT INTO food (name, category, description, ingredients, kkal, lemak, protein, karbohidrat, img) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
-  connection.query(query, [name, category, description, ingredients, kkal, lemak, protein, karbohidrat, imageUrl], (err, result) => {
+  const query = 'INSERT INTO food (name, category, description, ingredients, kkal, lemak, protein, karbohidrat, img, idx) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+  connection.query(query, [name, category, description, ingredients, kkal, lemak, protein, karbohidrat, imageUrl, idx], (err, result) => {
     if (err) {
       res.status(500).send({ message: err.sqlMessage });
     } else {
@@ -61,6 +61,7 @@ foodrouter.post('/food', multer.single('img'), imgUpload.uploadToGcs, (req, res)
     }
   });
 });
+
 
 
   foodrouter.put('/food/:id', multer.single('img'), imgUpload.uploadToGcs, (req, res) => {
