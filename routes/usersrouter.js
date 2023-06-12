@@ -38,7 +38,7 @@ usersrouter.get("/users/:id", verifyToken, (req, res) => {
     });
 });
 // usersrouter for /users/:id endpoint
-usersrouter.delete("/users/:id", (req, res) => {
+usersrouter.delete("/users/:id",verifyToken, (req, res) => {
     const id = req.params.id;
 
     const query = "DELETE FROM users WHERE id = ?";
@@ -181,7 +181,6 @@ usersrouter.put('/editpass/:id', verifyToken, (req, res) => {
     const id = req.params.id;
     
     let imageUrl = '';
-  
     if (req.file && req.file.cloudStoragePublicUrl) {
       imageUrl = req.file.cloudStoragePublicUrl;
     }

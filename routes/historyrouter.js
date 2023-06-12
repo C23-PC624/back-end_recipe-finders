@@ -24,7 +24,7 @@ historyrouter.get("/history", verifyToken, (req, res) => {
 historyrouter.get("/history/:id", verifyToken, (req, res) => {
     const id = req.params.id;
 
-    const query = "SELECT * FROM history WHERE id = ?";
+    const query = "SELECT * FROM history WHERE user_id = ?";
     connection.query(query, [id], (err, rows, field) => {
         if(err) {
             res.status(500).send({message: err.sqlMessage});

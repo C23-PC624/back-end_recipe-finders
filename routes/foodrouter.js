@@ -48,7 +48,6 @@ foodrouter.delete("/food/:id", (req, res) => {
     });
 });
 
-
 foodrouter.post('/food', multer.single('img'), imgUpload.uploadToGcs, (req, res) => {
   const { name, category, description, ingredients, kkal, lemak, protein, karbohidrat, idx } = req.body;
   const imageUrl = req.file ? req.file.cloudStoragePublicUrl : '';
@@ -61,8 +60,6 @@ foodrouter.post('/food', multer.single('img'), imgUpload.uploadToGcs, (req, res)
     }
   });
 });
-
-
 
   foodrouter.put('/food/:id', multer.single('img'), imgUpload.uploadToGcs, (req, res) => {
     const id = req.params.id;
