@@ -28,7 +28,7 @@ usersrouter.get("/users", verifyToken, (req, res) => {
 usersrouter.get("/users/:id", verifyToken, (req, res) => {
     const id = req.params.id;
 
-    const query = "SELECT users.id, users.name, users.username, users.password, users.img, preferences.name AS preference_name FROM users JOIN preferences ON users.preferences = preferences.id WHERE users.id = ?";
+    const query = "SELECT * FROM users WHERE users.id = ?";
     connection.query(query, [id], (err, rows, field) => {
         if(err) {
             res.status(500).send({message: err.sqlMessage});
@@ -53,7 +53,7 @@ usersrouter.delete("/users/:id",verifyToken, (req, res) => {
 
 
 usersrouter.post('/users/register', multer.single('img'), imgUpload.uploadToGcs, (req, res) => {
-  const { name, username, password } = req.body;
+  const { name, email, password } = req.body;
   const imageUrl = req.file ? req.file.cloudStoragePublicUrl : '';
 
   // Mengenkripsi password menggunakan bcrypt
@@ -61,8 +61,8 @@ usersrouter.post('/users/register', multer.single('img'), imgUpload.uploadToGcs,
     if (err) {
       res.status(500).send({ message: 'Password encryption failed' });
     } else {
-      const query = 'INSERT INTO users (name, username, password, img) VALUES (?, ?, ?, ?)';
-      connection.query(query, [name, username, hashedPassword, imageUrl], (err, result) => {
+      const query = 'INSERT INTO users (name, email, password, img) VALUES (?, ?, ?, ?)';
+      connection.query(query, [name, email, hashedPassword, imageUrl], (err, result) => {
         if (err) {
           res.status(500).send({ message: err.sqlMessage });
         } else {
@@ -78,9 +78,9 @@ usersrouter.post('/users/register', multer.single('img'), imgUpload.uploadToGcs,
 
 // Login User
 usersrouter.post("/users/login", (req, res) => {
-  const { username, password } = req.body;
-  const query = 'SELECT * FROM users WHERE username = ?';
-  connection.query(query, [username], (err, rows) => {
+  const { email, password } = req.body;
+  const query = 'SELECT * FROM users WHERE email = ?';
+  connection.query(query, [email], (err, rows) => {
     if (err) {
       res.status(500).send({ message: err.sqlMessage });
     } else {
@@ -187,15 +187,15 @@ usersrouter.put('/editpass/:id', verifyToken, (req, res) => {
 
   usersrouter.put('/users/:id', multer.single('img'), imgUpload.uploadToGcs, verifyToken,(req, res) => {
     const id = req.params.id;
-    const { username, preferences } = req.body;
+    const { email } = req.body;
     let imageUrl = '';
   
     if (req.file && req.file.cloudStoragePublicUrl) {
       imageUrl = req.file.cloudStoragePublicUrl;
     }
   
-    const query = 'UPDATE users SET username = ?, preferences = ?, img = ? WHERE id = ?';
-    connection.query(query, [username, preferences, imageUrl, id], (err, result) => {
+    const query = 'UPDATE users SET email = ?,  img = ? WHERE id = ?';
+    connection.query(query, [email, imageUrl, id], (err, result) => {
       if (err) {
         res.status(500).send({ message: err.sqlMessage });
       } else {
