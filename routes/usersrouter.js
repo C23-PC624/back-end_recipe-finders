@@ -53,7 +53,7 @@ usersrouter.delete("/users/:id",verifyToken, (req, res) => {
 
 
 usersrouter.post('/users/register', multer.single('img'), imgUpload.uploadToGcs, (req, res) => {
-  const { name, username, password, preferences } = req.body;
+  const { name, username, password } = req.body;
   const imageUrl = req.file ? req.file.cloudStoragePublicUrl : '';
 
   // Mengenkripsi password menggunakan bcrypt
@@ -61,8 +61,8 @@ usersrouter.post('/users/register', multer.single('img'), imgUpload.uploadToGcs,
     if (err) {
       res.status(500).send({ message: 'Password encryption failed' });
     } else {
-      const query = 'INSERT INTO users (name, username, password, preferences, img) VALUES (?, ?, ?, ?, ?)';
-      connection.query(query, [name, username, hashedPassword, preferences, imageUrl], (err, result) => {
+      const query = 'INSERT INTO users (name, username, password, img) VALUES (?, ?, ?, ?)';
+      connection.query(query, [name, username, hashedPassword, imageUrl], (err, result) => {
         if (err) {
           res.status(500).send({ message: err.sqlMessage });
         } else {
@@ -105,22 +105,7 @@ usersrouter.post("/users/login", (req, res) => {
 });
 
 
-usersrouter.put('/editpref/:id', verifyToken, (req, res) => {
-  const id = req.params.id;
-  const { preferences } = req.body;
-  const query = 'UPDATE users SET preferences = ? WHERE id = ?';
-  connection.query(query, [preferences, id], (err, result) => {
-    if (err) {
-      res.status(500).send({ message: err.sqlMessage });
-    } else {
-      if (result.affectedRows === 0) {
-        res.status(404).send({ message: 'User not found' });
-      } else {
-        res.status(200).send({ message: 'Prefences add successfully' });
-      }
-    }
-  });
-});
+
 
 
 
