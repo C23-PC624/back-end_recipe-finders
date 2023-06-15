@@ -12,7 +12,7 @@ const multer = Multer({
 
 // Router for /food endpoint
 foodrouter.get("/food", verifyToken, (req, res) => {
-    const query = "SELECT * FROM food";
+    const query = "SELECT food.*, preferences.name AS kategori FROM food JOIN preferences ON food.category = preferences.id";
     connection.query(query, (err, rows, field) => {
         if(err) {
             res.status(500).send({message: err.sqlMessage});
@@ -25,7 +25,7 @@ foodrouter.get("/food", verifyToken, (req, res) => {
 foodrouter.get("/food/:id", verifyToken, (req, res) => {
     const id = req.params.id;
 
-    const query = "SELECT * FROM food WHERE id = ?";
+    const query = "SELECT food.*, preferences.name AS kategori FROM food JOIN preferences ON food.category = preferences.id WHERE id = ?";
     connection.query(query, [id], (err, rows, field) => {
         if(err) {
             res.status(500).send({message: err.sqlMessage});
