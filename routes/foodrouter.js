@@ -86,7 +86,7 @@ foodrouter.post('/food', multer.single('img'), imgUpload.uploadToGcs, (req, res)
 
 
     // foodrouter for searching food by idx collumn
-foodrouter.get("/findfood", verifyToken, (req, res) => {
+foodrouter.post("/findfood", verifyToken, (req, res) => {
   const idx = req.body.predicted_class;
 
   const query = "SELECT * FROM food WHERE idx = ?";
