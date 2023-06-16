@@ -17,8 +17,32 @@ All endpoints require authentication using a valid token. Include the token in t
 ## Endpoints
 
 ### Get All Users
+Endpoint: /users
+Method: GET
+Description: Retrieves information of all users.
+Authentication: Requires authentication with a valid token.
+Request Parameters: None
+Response: Returns an array of user objects.
 
-...
+# GET /users
+Response:
+Status: 200 OK
+Body:
+[
+  {
+    "id": 1,
+    "name": "John Doe",
+    "email": "john@example.com",
+    "img": "http://example.com/images/user1.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Jane Smith",
+    "email": "jane@example.com",
+    "img": "http://example.com/images/user2.jpg"
+  }
+]
+
 
 ### Get User by ID
 
