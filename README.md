@@ -14,7 +14,7 @@ The base URL for all API endpoints is: `https://backend-dot-recipe-finder-388213
 All endpoints require authentication using a valid token. Include the token in the request headers as follows:
 
 
-## Endpoints
+## Endpoints Users
 
 ### Get All Users
   - Endpoint: /users
@@ -269,4 +269,12 @@ Berikut adalah dokumentasi yang dibuat berdasarkan contoh router yang Anda berik
           "message": "Users updated successfully"
         }
         ```
+
+## Endpoints Food
+......
+## Endpoints Favorite
+....
+## Endpoints History
+....
+## Endpoints Preferences
 
