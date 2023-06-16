@@ -2,6 +2,9 @@
 
 This API documentation provides information about the endpoints available in the Recipe Finders API.
 
+# Database Structure
+![alt text](Database-Structure.png "Title")
+
 ## Base URL
 
 The base URL for all API endpoints is: `https://backend-dot-recipe-finder-388213.as.r.appspot.com/`
