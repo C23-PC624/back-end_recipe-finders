@@ -14,10 +14,10 @@ The base URL for all API endpoints is: `https://backend-dot-recipe-finder-388213
 All endpoints require authentication using a valid token. Include the token in the request headers as follows:
 
 
-# Endpoints
+## Endpoints
 
-## Get All Users
-#### Endpoint: /users
+- Get All Users
+  - Endpoint: /users
 #### Method: GET
 #### Description: Retrieves information of all users.
 #### Authentication: Requires authentication with a valid token.
