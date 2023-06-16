@@ -277,4 +277,97 @@ Berikut adalah dokumentasi yang dibuat berdasarkan contoh router yang Anda berik
 ## Endpoints History
 ....
 ## Endpoints Preferences
+- Get All Preferences
+  - Endpoint: `/preferences`
+  - Method: GET
+  - Description: Retrieves information of all preferences.
+  - Response: Returns an array of preference objects.
+  - Example:
+    - Request:
+      - URL: `/preferences`
+    - Response:
+      - Status: 200 OK
+      - Body:
+        ```json
+        [
+          {
+            "id": 1,
+            "name": "Preference 1"
+          },
+          {
+            "id": 2,
+            "name": "Preference 2"
+          },
+          ...
+        ]
+        ```
+
+### Get Preference by ID
+  - Endpoint: `/preferences/:id`
+  - Method: GET
+  - Description: Retrieves information of a specific preference based on the provided ID.
+  - Request Parameters:
+    - `id` (path parameter) - The ID of the preference to retrieve.
+  - Response: Returns the preference object matching the provided ID.
+  - Example:
+    - Request:
+      - URL: `/preferences/1`
+    - Response:
+      - Status: 200 OK
+      - Body:
+        ```json
+        [
+          {
+            "id": 1,
+            "name": "Preference 1"
+          }
+        ]
+        ```
+
+### Add Preference
+  - Endpoint: `/preferences`
+  - Method: POST
+  - Description: Creates a new preference with the provided information.
+  - Request Body:
+    - `name` (string) - The name of the preference.
+  - Response: Returns a success message and the ID of the inserted preference upon successful creation.
+  - Example:
+    - Request:
+      - URL: `/preferences`
+      - Headers:
+        - Content-Type: application/json
+      - Body:
+        ```json
+        {
+          "name": "Preference 3"
+        }
+        ```
+    - Response:
+      - Status: 201 Created
+      - Body:
+        ```json
+        {
+          "message": "Data inserted successfully",
+          "insertId": 3
+        }
+        ```
+
+### Delete Preference
+  - Endpoint: `/preferences/:id`
+  - Method: DELETE
+  - Description: Deletes a preference based on the provided ID.
+  - Request Parameters:
+    - `id` (path parameter) - The ID of the preference to delete.
+  - Response: Returns a success message upon successful deletion.
+  - Example:
+    - Request:
+      - URL: `/preferences/1`
+    - Response:
+      - Status: 200 OK
+      - Body:
+        ```json
+        {
+          "message": "Delete successful"
+        }
+        ```
 
