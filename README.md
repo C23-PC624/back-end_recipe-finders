@@ -18,11 +18,11 @@ All endpoints require authentication using a valid token. Include the token in t
 
 ### Get All Users
 #### Endpoint: /users
-Method: GET
-Description: Retrieves information of all users.
-Authentication: Requires authentication with a valid token.
-Request Parameters: None
-Response: Returns an array of user objects.
+#### Method: GET
+#### Description: Retrieves information of all users.
+#### Authentication: Requires authentication with a valid token.
+#### Request Parameters: None
+#### Response: Returns an array of user objects.
 
 
 
