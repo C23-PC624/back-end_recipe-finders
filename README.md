@@ -6,7 +6,7 @@ This API documentation provides information about the endpoints available in the
 ![alt text](Database-Structure.png "Title")
 
 # Google CLoud Architecture
-![alt text]([Database-Structure.png "Title"](https://github.com/C23-PC624/back-end_recipe-finders/blob/5bec7c8cbda9513380a43bbd5b1f63cb092ad4e4/Backend%20Architecture.png))
+![alt text](https://github.com/C23-PC624/back-end_recipe-finders/blob/5bec7c8cbda9513380a43bbd5b1f63cb092ad4e4/Backend%20Architecture.png)
 
 ## Base URL
 
