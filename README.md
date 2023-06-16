@@ -36,9 +36,31 @@ All endpoints require authentication using a valid token. Include the token in t
     }
 
 - Get User by ID
-
-...
-
+  - Endpoint: `/users/:id`
+  - Method: GET
+  - Description: Retrieves information of a specific user based on the provided ID.
+  - Authentication: Requires authentication with a valid token.
+  - Request Parameters:
+    - `id` (path parameter) - The ID of the user to retrieve.
+  - Response: Returns the user object matching the provided ID.
+  - Example:
+    - Request:
+      - URL: `/users/1`
+      - Headers:
+        - Authorization: Bearer {valid_token}
+    - Response:
+      - Status: 200 OK
+      - Body:
+        ```json
+        [
+          {
+            "id": 1,
+            "name": "John Doe",
+            "email": "john@example.com",
+            "img": "http://example.com/images/user1.jpg"
+          }
+        ]
+        ```
 - Delete User
 
 ...
