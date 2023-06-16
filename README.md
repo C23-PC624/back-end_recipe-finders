@@ -47,7 +47,7 @@ All endpoints require authentication using a valid token. Include the token in t
     - Request:
       - URL: `/users/1`
       - Headers:
-        - Authorization: Bearer {valid_token}
+        - Authorization: {valid_token}
     - Response:
       - Status: 200 OK
       - Body:
