@@ -277,7 +277,7 @@ Berikut adalah dokumentasi yang dibuat berdasarkan contoh router yang Anda berik
 ## Endpoints History
 ....
 ## Endpoints Preferences
-- Get All Preferences
+### Get All Preferences
   - Endpoint: `/preferences`
   - Method: GET
   - Description: Retrieves information of all preferences.
