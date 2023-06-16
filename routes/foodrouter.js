@@ -89,7 +89,7 @@ foodrouter.post('/food', multer.single('img'), imgUpload.uploadToGcs, (req, res)
 foodrouter.post("/findfood", verifyToken, (req, res) => {
   const idx = req.body.predicted_class;
 
-  const query = "SELECT * FROM food WHERE idx = ?";
+  const query = "SELECT food.*, preferences.name AS kategori FROM food JOIN preferences ON food.category = preferences.id WHERE idx = ?";
   connection.query(query, [idx], (err, rows, field) => {
       if(err) {
           res.status(500).send({message: err.sqlMessage});
