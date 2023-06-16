@@ -35,31 +35,27 @@ All endpoints require authentication using a valid token. Include the token in t
       "img": "http://example.com/images/user1.jpg"
     }
 
-
-
-
-
-### Get User by ID
+- Get User by ID
 
 ...
 
-### Delete User
+- Delete User
 
 ...
 
-### Register User
+- Register User
 
 ...
 
-### User Login
+- User Login
 
 ...
 
-### Update User Password
+- Update User Password
 
 ...
 
-### Update User Profile Image
+- Update User Profile Image
 
 ...
 
