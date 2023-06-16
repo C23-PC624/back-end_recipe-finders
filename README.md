@@ -24,24 +24,7 @@ Authentication: Requires authentication with a valid token.
 Request Parameters: None
 Response: Returns an array of user objects.
 
-# GET /users
-Response:
-Status: 200 OK
-Body:
-[
-  {
-    "id": 1,
-    "name": "John Doe",
-    "email": "john@example.com",
-    "img": "http://example.com/images/user1.jpg"
-  },
-  {
-    "id": 2,
-    "name": "Jane Smith",
-    "email": "jane@example.com",
-    "img": "http://example.com/images/user2.jpg"
-  }
-]
+
 
 
 ### Get User by ID
