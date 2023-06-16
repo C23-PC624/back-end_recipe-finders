@@ -17,7 +17,7 @@ All endpoints require authentication using a valid token. Include the token in t
 ## Endpoints
 
 ### Get All Users
-Endpoint: /users
+#### Endpoint: /users
 Method: GET
 Description: Retrieves information of all users.
 Authentication: Requires authentication with a valid token.
