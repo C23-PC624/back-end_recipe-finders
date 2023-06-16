@@ -210,11 +210,4 @@ usersrouter.put('/editpass/:id', verifyToken, (req, res) => {
 
 
 
-
-  
-
-  
-  
-
-
 module.exports=usersrouter

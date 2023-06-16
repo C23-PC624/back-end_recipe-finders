@@ -67,23 +67,4 @@ preferencesrouter.delete("/preferences/:id", (req, res) => {
     });
 });
 
-preferencesrouter.post("/insertrecord", multer.single('attachment'), imgUpload.uploadToGcs, (req, res) => {
-    const name = req.body.name
-    const amount = req.body.amount
-    const date = req.body.date
-    const notes = req.body.notes
-    var imageUrl = ''
-    if (req.file && req.file.cloudStoragePublicUrl) {
-        imageUrl = req.file.cloudStoragePublicUrl
-    }
-    const query = "INSERT INTO records (name, amount, date, notes, attachment) values (?, ?, ?, ?, ?)"
-    connection.query(query, [name, amount, date, notes, imageUrl], (err, rows, fields) => {
-        if (err) {
-            res.status(500).send({message: err.sqlMessage})
-        } else {
-            res.send({message: "Insert Successful"})
-        }
-    })
-})
-
 module.exports = preferencesrouter
