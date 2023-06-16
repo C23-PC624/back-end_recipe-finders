@@ -16,7 +16,7 @@ All endpoints require authentication using a valid token. Include the token in t
 
 ## Endpoints
 
-- Get All Users
+### Get All Users
   - Endpoint: /users
   - Method: GET
   - Description: Retrieves information of all users.
@@ -35,7 +35,7 @@ All endpoints require authentication using a valid token. Include the token in t
       "img": "http://example.com/images/user1.jpg"
     }
 
-- Get User by ID
+### Get User by ID
   - Endpoint: `/users/:id`
   - Method: GET
   - Description: Retrieves information of a specific user based on the provided ID.
@@ -63,7 +63,7 @@ All endpoints require authentication using a valid token. Include the token in t
         ```
 Berikut adalah dokumentasi yang dibuat berdasarkan contoh router yang Anda berikan:
 
-- Get User by ID
+### Get User by ID
   - Endpoint: `/users/:id`
   - Method: GET
   - Description: Retrieves information of a specific user based on the provided ID.
@@ -90,7 +90,7 @@ Berikut adalah dokumentasi yang dibuat berdasarkan contoh router yang Anda berik
         ]
         ```
 
-- Delete User
+### Delete User
   - Endpoint: `/users/:id`
   - Method: DELETE
   - Description: Deletes a user based on the provided ID.
@@ -112,7 +112,7 @@ Berikut adalah dokumentasi yang dibuat berdasarkan contoh router yang Anda berik
         }
         ```
 
-- Register User
+### Register User
   - Endpoint: `/users/register`
   - Method: POST
   - Description: Registers a new user with the provided information.
@@ -145,7 +145,7 @@ Berikut adalah dokumentasi yang dibuat berdasarkan contoh router yang Anda berik
         }
         ```
 
-- Login User
+### Login User
   - Endpoint: `/users/login`
   - Method: POST
   - Description: Authenticates a user based on the provided email and password.
@@ -172,9 +172,7 @@ Berikut adalah dokumentasi yang dibuat berdasarkan contoh router yang Anda berik
         {
           "message": "Login Successful",
           "data": {
-            "id":
-
- 1,
+            "id": 1,
             "name": "John Doe",
             "email": "john@example.com",
             "img": "http://example.com/images/user1.jpg"
@@ -183,7 +181,7 @@ Berikut adalah dokumentasi yang dibuat berdasarkan contoh router yang Anda berik
         }
         ```
 
-- Update User Password
+### Update User Password
   - Endpoint: `/editpass/:id`
   - Method: PUT
   - Description: Updates the password of a user based on the provided ID and old password.
@@ -216,7 +214,7 @@ Berikut adalah dokumentasi yang dibuat berdasarkan contoh router yang Anda berik
         }
         ```
 
-- Update User Image
+### Update User Image
   - Endpoint: `/editimage/:id`
   - Method: PUT
   - Description: Updates the image of a user based on the provided ID.
@@ -243,7 +241,7 @@ Berikut adalah dokumentasi yang dibuat berdasarkan contoh router yang Anda berik
         }
         ```
 
-- Update User Email and Image
+### Update User Email and Image
   - Endpoint: `/users/:id`
   - Method: PUT
   - Description: Updates the email and image of a user based on the provided ID.
