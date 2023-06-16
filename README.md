@@ -196,7 +196,7 @@ Berikut adalah dokumentasi yang dibuat berdasarkan contoh router yang Anda berik
     - Request:
       - URL: `/editpass/1`
       - Headers:
-        - Authorization:{valid_token}
+        - Authentication:{valid_token}
         - Content-Type: application/json
       - Body:
         ```json
@@ -271,12 +271,260 @@ Berikut adalah dokumentasi yang dibuat berdasarkan contoh router yang Anda berik
         ```
 
 ## Endpoints Food
-......
+
+### Get All Food
+  - Endpoint: `/food`
+  - Method: GET
+  - Description: Retrieves information of all food.
+  - Response: Returns an array of food objects.
+  - Example:
+    - Request:
+      - URL: `/food`
+      - Headers:
+        - Authentication:{valid_token}
+        - Content-Type: application/json
+    - Response:
+      - Status: 200 OK
+      - Body : 
+        ```json
+        [
+            {
+                "id": 1,
+                "name": "Bakso",
+                "category": 4,
+                "description": "It is a Food that is made with meat",
+                "ingredients": "meat, salt, pepper",
+                "kkal": "250",
+                "lemak": "10",
+                "protein": "15",
+                "karbohidrat": "40",
+                "idx": "1",
+                "kategori": "Halal"
+            },
+            {
+                "id": 2,
+                "name": "Sate",
+                "category": 4,
+                "description": "It is a Food that is made with meat",
+                "ingredients": "meat, salt, pepper",
+                "kkal": "250",
+                "lemak": "10",
+                "protein": "15",
+                "karbohidrat": "50",
+                "idx": "3",
+                "kategori": "Halal"
+            }
+        ]  
+        ```
+
+### Get Food by ID
+  - Endpoint: `/food/:id`
+  - Method: GET
+  - Description: Retrieves information of a specific food based on the provided ID.
+  - Request Parameters:
+    - `id` (path parameter) - The ID of the food to retrieve.
+  - Response: Returns a food object.
+  - Example:
+    - Request:
+      - URL: `/food/1`
+      - Headers:
+        - Authentication:{valid_token}
+        - Content-Type: application/json
+    - Response:
+      - Status: 200 OK
+      - Body:
+        ```json
+        {
+            "id": 1,
+            "name": "Bakso",
+            "category": 4,
+            "description": "It is a Food that is made with meat",
+            "ingredients": "meat, salt, pepper",
+            "kkal": "250",
+            "lemak": "10",
+            "protein": "15",
+            "karbohidrat": "40",
+            "idx": "1",
+            "kategori": "Halal"
+        }
+        ```
+
 ## Endpoints Favorite
-....
+
+### Add Favorites
+  - Endpoint: `/favorites`
+  - Method: POST  
+  - Description: Adds a new favorite to the database base on the food's id and user's id.
+  - Request 
+  - Request Body:
+    - `food_id` (integer) - The ID of the food to add to favorites.
+    - `user_id` (integer) - The ID of the user to add to favorites.
+  - Response: Returns a success message upon successful addition.
+  - Example:
+    - Request:
+      - URL: `/favorites`
+      - Headers:
+        - Authentication:{valid_token}
+        - Content-Type: application/json
+      - Body:
+        ```json
+        {
+          "food_id": 1,
+          "user_id": 1
+        }
+        ```
+    - Response:
+        - Status: 201 Created
+        - Body:
+            ```json
+            {
+            "message": "Data inserted successfully"
+            }
+            ```
+
+### Delete Favorites
+  - Endpoint: `/favorites/:id`
+  - Method: DELETE
+  - Description: Deletes a favorite from the database based on the provided ID.
+  - Request Parameters:
+    - `id` (path parameter) - The ID of the favorite to delete.
+  - Response: Returns a success message upon successful deletion.
+  - Example:
+    - Request:
+      - URL: `/favorites/1`
+      - Headers:
+        - Authentication:{valid_token}
+        - Content-Type: application/json
+    - Response:
+      - Status: 200 OK
+      - Body:
+        ```json
+        {
+          "message": "Data deleted successfully"
+        }
+        ```
+
+### Get Favorites by User ID
+  - Endpoint: `/favorites/:id`
+  - Method: GET
+  - Description: Retrieves information of all favorites based on the provided user ID.
+   - Request Parameters:
+   - `id` (path parameter) - The ID of the user to retrieve favorites for the user.
+   - Response: Returns an array of favorite objects.
+   - Example:
+        - Request:
+         - URL: `/favorites/1`
+         - Headers:
+           - Authentication:{valid_token}
+           - Content-Type: application/json
+        - Response:
+         - Status: 200 OK
+         - Body:
+            ```json
+            [
+                 {
+                  "id": 1,
+                  "user_id": 1,
+                  "img" : file
+                 },
+                 {
+                  "id": 2,
+                  "user_id": 1,
+                  "food_id": 2
+                 }
+            ]
+            ```
+
 ## Endpoints History
-....
+
+### GET History by User ID
+  - Endpoint: `/history/:id`
+  - Method: GET
+  - Description: Retrieves information of all history based on the provided user ID.
+  - Authentication: Requires authentication with a valid token.
+   - Request Parameters:
+   - `id` (path parameter) - The ID of the user to retrieve history for the user.
+   - Response: Returns an array of history objects.
+   - Example:
+        - Request:
+         - URL: `/history/1`
+         - Headers:
+           - Authentication:{valid_token}
+           - Content-Type: application/json
+        - Response:
+         - Status: 200 OK
+         - Body:
+            ```json
+            [
+                 {
+                  "id": 1,
+                  "user_id": 1,
+                  "food_id": 1
+                 },
+                 {
+                  "id": 2,
+                  "user_id": 1,
+                  "food_id": 2
+                 }
+            ]
+            ```
+
+### Add History
+  - Endpoint: `/history`
+  - Method: POST  
+  - Description: Adds a new history to the database base on the user's id and image file from the user.
+  - Authentication: Requires authentication with a valid token.
+    - Request Body:
+        - `user_id` (integer) - The ID of the user to add to history.
+        - `img` (file) - The image file of the food to add to history.
+    - Response: Returns a success message upon successful addition.
+  - Example :
+    - Request:
+      - URL: `/history`
+      - Headers:
+        - Authentication:{valid_token}
+        - Content-Type: application/json
+      - Body:
+        ```json
+        {
+          "user_id": 1,
+          "img": file
+        }
+        ```
+    - Response:
+        - Status: 201 Created
+        - Body:
+            ```json
+            {
+            "message": "Data inserted successfully"
+            }
+            ```
+
+### Delete History
+    - Endpoint: `/history/:id`
+    - Method: DELETE
+    - Description: Deletes a history from the database based on the provided ID.
+    - Authentication: Requires authentication with a valid token.
+    - Request Parameters:
+        - `id` (path parameter) - The ID of the history to delete.
+    - Response: Returns a success message upon successful deletion.
+    - Example:
+        - Request:
+        - URL: `/history/1`
+        - Headers:
+            - Authentication:{valid_token}
+            - Content-Type: application/json
+        - Response:
+        - Status: 200 OK
+        - Body:
+            ```json
+            {
+            "message": "Data deleted successfully"
+            }
+            ```
+
 ## Endpoints Preferences
+
 ### Get All Preferences
   - Endpoint: `/preferences`
   - Method: GET
